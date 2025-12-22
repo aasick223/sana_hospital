@@ -25,6 +25,8 @@ B. Sales Reports
 <img width="1920" height="1080" alt="Screenshot (68)" src="https://github.com/user-attachments/assets/0839c7c4-f45f-4a26-bfa3-8aaf63ffb1bc" />
 <img width="1920" height="1080" alt="Screenshot (71)" src="https://github.com/user-attachments/assets/7cf0228e-61a1-4950-b3d1-976e673750d3" />
 <img width="1920" height="1080" alt="Screenshot (72)" src="https://github.com/user-attachments/assets/18f752ea-9859-4611-b98d-f51526e98822" />
+<img width="1920" height="1080" alt="Screenshot (76)" src="https://github.com/user-attachments/assets/b4d62c82-8639-48b9-be1a-289fab4a0fe0" />
+
 
 
 
