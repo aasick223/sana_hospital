@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sana Hospital</title>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Select2 CSS & JS -->
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" /> -->
+
+  <!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+    }
+    #newmfOptionBox {
+      display: none;
+      margin-top: 10px;
+    }
+    #newpharmaOptionBox {
+      display: none;
+      margin-top: 10px;
+    }
+    #newcombinationOptionBox {
+      display: none;
+      margin-top: 10px;
+    }
+    #newtabletOptionBox {
+      display: none;
+      margin-top: 10px;
+    }
+     #newcategoryOptionBox {
+      display: none;
+      margin-top: 10px;
+    }
+    .select2-container {
+      width: 250px !important;
+    }
+  </style>
+
+  <script>
+  function calc() {
+
+  // total qty
+  var amount = document.getElementById("totalnumberofstrip").value;
+  var amount = parseInt(amount, 10);
+  var quantity = document.getElementById("numberoftabletinperstrip").value;
+  var quantity = parseInt(quantity, 10);
+  var total = amount * quantity;
+  document.getElementById("tabletqty").value = total;
+
+ // total strip rate and total strip mrp
+  var totalnumberofstrip = document.getElementById("totalnumberofstrip").value;
+  var totalnumberofstrip = parseInt(totalnumberofstrip, 10);
+  var perstriprate = document.getElementById("perstriprate").value;
+  var perstriprate = parseInt(perstriprate, 10);
+  var totalstriprate = totalnumberofstrip * perstriprate;
+
+  var perstripmrp = document.getElementById("perstripmrp").value;
+  var perstripmrp = parseInt(perstripmrp, 10);
+  var totalstripmrp = totalnumberofstrip * perstripmrp;
+  document.getElementById("totalstripmrp").value = totalstripmrp;
+
+  document.getElementById("totalstriprate").value = totalstriprate;
+
+  //pertabletrate  
+  var totalstriprate = document.getElementById("totalstriprate").value;
+  var totalstriprate = parseInt(totalstriprate, 10);
+  var tabletqty = document.getElementById("tabletqty").value;
+  var tabletqty = parseInt(tabletqty, 10);
+  var pertabletrate = totalstriprate / tabletqty;
+  document.getElementById("pertabletrate").value = pertabletrate;
+
+ 
+  //pertabletmrp
+  var totalstripmrp = document.getElementById("totalstripmrp").value;
+  var totalstripmrp = parseInt(totalstripmrp, 10);
+  var tabletqty = document.getElementById("tabletqty").value;
+  var tabletqty = parseInt(tabletqty, 10);
+  var pertabletmrp = totalstripmrp / tabletqty;
+  document.getElementById("pertabletmrp").value = pertabletmrp;  
+
+  //perstrip rate discount percentage
+      var totalstriprate = document.getElementById("totalstriprate").value;
+      var totalstriprate = parseInt(totalstriprate, 10);
+      var tabletqty = document.getElementById("tabletqty").value;
+      var tabletqty = parseInt(tabletqty, 10);
+
+      var perstripratepercentage = document.getElementById("perstripratepercentage").value;
+      var perstripratepercentage = parseInt(perstripratepercentage, 10);
+
+      var totalnumberofstrip = document.getElementById("totalnumberofstrip").value;
+      var totalnumberofstrip = parseInt(totalnumberofstrip, 10);
+
+      // Strip discount amount
+      let stripDiscountAmt = totalstriprate * (perstripratepercentage / 100);
+
+      // Total strip rate after discount
+      let totalStripAfterDiscount = totalstriprate - stripDiscountAmt;
+      document.getElementById("totalstriprateafterdiscount").value = totalStripAfterDiscount.toFixed(2);
+
+      // Per tablet discounted rate
+      let perTabletDiscounted = totalStripAfterDiscount / tabletqty;
+      document.getElementById("pertabletrateafterdiscount").value = perTabletDiscounted.toFixed(2);
+
+      // Total strip discount
+      document.getElementById("totalstripdiscountamount").value = stripDiscountAmt.toFixed(2);
+
+      // Per tablet discount amount
+      let perTabletDiscountAmount = stripDiscountAmt / tabletqty;
+      document.getElementById("pertabletdiscountamount").value = perTabletDiscountAmount.toFixed(2)
+
+      let perStripDiscountAmt = stripDiscountAmt / totalnumberofstrip;
+      document.getElementById("perstripdiscountamount").value = perStripDiscountAmt.toFixed(2);
+
+      let perStripRate = totalstriprate / totalnumberofstrip;
+      let perStripAfterDiscount = perStripRate - perStripDiscountAmt;
+      document.getElementById("perstriprateafterdiscount").value = perStripAfterDiscount.toFixed(2);
+  
+}
+  </script>
+</head>
+<body>
+
+  <!-- Select dropdown -->
+ 
+  <!-- <h3 class="pull-right"><a href="{% url 'home' %}"><u>Tablet stock Add</u></a></h3> -->
+  
+  <div class="container mt-5">
+    <div class="row">
+      <h1 class="text-center bg-primary text-white">Tablet Stock</h1>
+    </div>
+ <div class="row">
+    <div class="col text-end">
+        <h3 class="d-inline-block me-3">
+            <a href="{% url 'tabletlist' %}"><u>Tablet stock List /</u></a>
+        </h3>
+
+        <h3 class="d-inline-block">
+            <a href="{% url 'masterpatientlist' %}"><u>Master Patient List /</u></a>
+        </h3>
+    </div>
+</div>
+    <div class="row mt-4" style="margin-top: 50px;">
+        <div class="col-md-3">
+            <label>MF *</label><br>
+              <select id="mfname" style="width:250px;">
+                {% for mfchoice in mf_list %}
+                <option>{{mfchoice.mfname}}</option>
+                {% endfor %}
+              </select>
+               <br><br>
+              <button class="btn btn-primary btn-sm" id="showmfInputBtn" >Add New Mf</button>
+
+              <div id="newmfOptionBox">
+                <input type="text" id="newmfOptionText" placeholder="Enter new option">
+                <button id="addmfOptionBtn">Add</button>
+                <button id="cancelmfBtn">Cancel</button>
+              </div>
+        </div>
+
+        <div class="col-md-3">
+          <label>PHARMA *</label>
+          <select id="pharmaname" style="width:250px;">
+            {% for pharma in pharma_list %}
+            <option id="">{{pharma.pharmaname}}</option>
+            {% endfor %}
+          </select>
+           <br><br>
+              <button id="showpharmaInputBtn"  class="btn btn-primary btn-sm">Add New Pharma</button>
+
+              <div id="newpharmaOptionBox">
+                <input type="text" id="newpharmaOptionText" placeholder="Enter new option">
+                <button id="addpharmaOptionBtn">Add</button>
+                <button id="cancelpharmaBtn">Cancel</button>
+              </div>  
+        </div>
+
+        <div class="col-md-3">
+          <label>COMBINATION *</label>
+          <select id="combinationname" style="width:250px;">
+            {% for combination in combination_list %}
+            <option id="">{{combination.combinationname}}</option>
+            {% endfor %}
+          </select>
+           <br><br>
+              <button id="showcombinationInputBtn"  class="btn btn-primary btn-sm">Add New Combination</button>
+
+              <div id="newcombinationOptionBox">
+                <input type="text" id="newcombinationOptionText" placeholder="Enter new option">
+                <button id="addcombinationOptionBtn">Add</button>
+                <button id="cancelcombinationBtn">Cancel</button>
+              </div>
+        </div>
+       
+
+        <div class="col-md-3">
+          <label>BRAND *</label>
+           <select id="tabletname" style="width:250px;">
+               {% for tablet in tablet_list %}
+            <option id="">{{tablet.tabletname}}</option>
+            {% endfor %}
+          </select>
+
+           <br><br>
+              <button id="showtabletInputBtn"  class="btn btn-primary btn-sm">Add New Tablet</button>
+
+              <div id="newtabletOptionBox">
+                <input type="text" id="newtabletOptionText" placeholder="Enter new option">
+                <button id="addtabletOptionBtn">Add</button>
+                <button id="canceltabletBtn">Cancel</button>
+              </div>
+         
+        </div>
+    </div>
+
+    <div class="row mt-4" style="margin-top: 50px;">
+
+      <div class="col-md-3">
+        <label>CATEGORY *</label>
+        <select id="categoryname" style="width:250px;">
+          {% for category in category_list %}
+          <option id="">{{category.categoryname}}</option>
+          {% endfor %}
+        </select>
+
+        <br><br>
+          <button id="showcategoryInputBtn"  class="btn btn-primary btn-sm">Add New Caegory</button>
+
+                <div id="newcategoryOptionBox">
+                  <input type="text" id="newcategoryOptionText" placeholder="Enter new option">
+                  <button id="addcategoryOptionBtn">Add</button>
+                  <button id="cancelcategoryBtn">Cancel</button>
+                </div>
+      </div>
+
+      <div class="col-md-3">
+          <label>Total No Of Strip *</label>
+          <input id = "totalnumberofstrip" type="number" class="form-control stripcount"   oninput="calc();">
+      </div>
+    
+      <div class="col-md-3">
+        <label>Number Of Tablet In Per Strip*</label>
+        <input id = "numberoftabletinperstrip" type="number" class="form-control stripcount" oninput="calc();">
+      </div>
+
+      <div class="col-md-3">
+        <label>Per Strip Rate *</label>
+        <input id="perstriprate" type="text" class="form-control" oninput="calc();">
+      </div>
+
+    </div>
+
+    <!-- strip rate percentage start -->
+     
+    <div class="row mt-4" style="margin-top: 50px";>
+        <div class="col-md-3">
+          <label>Per Strip Rate Discount Percentage *</label>
+          <input id="perstripratepercentage" type="text" class="form-control" oninput="calc();">
+        </div>
+
+        <div class="col-md-3">
+          <label>Total Strip Rate After Discount</label>
+          <input id="totalstriprateafterdiscount" type="text" class="form-control" disabled>
+        </div>
+
+        <div class="col-md-3">
+          <label>Pertablet Rate After Discount</label>
+          <input id="pertabletrateafterdiscount" type="text" class="form-control" oninput="calc();" disabled>
+        </div>
+
+        <div class="col-md-3">
+          <label>Per Strip Rate After Discount</label>
+          <input id="perstriprateafterdiscount" class="form-control" disabled>
+        </div>
+
+       
+    </div>
+    
+    <div class="row mt-4" style="margin-top: 50px";>
+
+        <div class="col-md-3">
+          <label>Per Strip Discount Amount</label>
+          <input id="perstripdiscountamount" class="form-control" disabled>
+        </div>
+
+        <div class="col-md-3">
+          <label>Per Tablet Discount Amount</label>
+          <input id="pertabletdiscountamount" class="form-control" disabled>
+        </div>
+
+        <div class="col-md-3">
+          <label>Total Strip Discount Amount</label>
+          <input id="totalstripdiscountamount" class="form-control" disabled>
+        </div>
+
+    </div>
+
+
+
+
+    <!-- strip rate percentage end -->
+
+    <div class="row mt-4" style="margin-top: 50px";>
+      <div class="col-md-3">
+      <label>Per Strip Mrp *</label>
+      <input id="perstripmrp" type="number" class="form-control" oninput="calc();">
+      </div>
+
+      <div class="col-md-3">
+        <label>Tablet Qty *</label>
+          <!-- new calc add -->
+        <input id="tabletqty" type="number" class="form-control sum" oninput="calc();" disabled>
+      </div>
+
+      <div class="col-md-3">
+        <label>Total Strip Rate *</label>
+        <!-- new calc add -->
+        <input id="totalstriprate" type="number" class="form-control" oninput="calc();" disabled>
+      </div>  
+
+      <div class="col-md-3">
+        <label>Total Strip Mrp *</label>
+        <input id="totalstripmrp" type="text" class="form-control"  oninput="calc();" disabled>
+      </div>
+
+    </div>
+
+    <div class="row mt-4" style="margin-top: 50px";>
+
+      <div class="col-md-3">
+          <label>Expired Date *</label>
+          <input id="expireddate" type="date" class="form-control">
+        </div>
+
+      <div class="col-md-3">
+        <label>Per Tablet Mrp *</label>
+        <input id="pertabletmrp" type="number" class="form-control" disabled>
+      </div>
+      
+      <div class="col-md-3">
+        <label>Per Tablet Rate *</label>
+        <input id="pertabletrate" type="number" class="form-control" disabled>
+      </div>
+      
+    </div>
+
+    <div class="row" style="margin-top: 50px";>
+      <!-- <a href='{% url 'tabletlist' %}'><button id ="tabletstockaddbtn" type="submit" value="Submit">Submit</button></a> -->
+            <div class="text-end">
+          <button class="btn btn-primary" id="tabletstockaddbtn" type="submit">
+              Submit
+          </button>
+      </div>
+      <!-- <a href='{% url 'tabletlist' %}'><button class="bg-primary text-white pull-right">Tablet_list</button></a> -->
+    </div>
+
+  </div>
+ 
+  <script>
+
+    // mf add option
+    mfname_1 = $('#mfname').val('');
+    pharmaname_1 = $('#pharmaname').val('');
+    combination_1 = $('#combinationname').val('');
+    tabletname_1 = $('#tabletname').val('');
+    categoryname_1 = $('#categoryname').val('');
+    // alert(mfname)
+    $(document).ready(function() {
+      // Initialize Select2
+      $('#mfname').select2({
+        placeholder: "Select a Mf",
+        allowClear: true
+      });
+
+      // Show the add-new-option box
+      $('#showmfInputBtn').click(function() {
+        $('#newmfOptionBox').slideDown();
+        $('#newmfOptionText').focus();
+      });
+
+      // Add new option dynamically
+      $('#addmfOptionBtn').click(function() {
+        let newText = $('#newmfOptionText').val().trim();
+        
+        if (newText === "") {
+          alert("Please enter a value!");
+          return;
+        }
+
+        // Check if the option already exists
+        let exists = false;
+        $('#mfname option').each(function() {
+          if ($(this).text().toLowerCase() === newText.toLowerCase()) {
+            exists = true;
+          }
+        });
+
+        if (exists) {
+          alert("This option already exists!");
+          return;
+        }
+
+        // Append the new option
+        let newOption = new Option(newText, newText.toLowerCase(), true, true);
+        $('#mfname').append(newOption).trigger('change');
+
+        // Clear input and hide box
+        $('#newmfOptionText').val('');
+        $('#newmfOptionBox').slideUp();
+      });
+
+      // Cancel button hides input box
+      $('#cancelmfBtn').click(function() {
+        $('#newmfOptionText').val('');
+        $('#newmfOptionBox').slideUp();
+      });
+    });
+
+    // pharma add option
+
+     $(document).ready(function() {
+      // Initialize Select2
+      $('#pharmaname').select2({
+        placeholder: "Select a Pharma",
+        allowClear: true
+      });
+
+      // Show the add-new-option box
+      $('#showpharmaInputBtn').click(function() {
+        $('#newpharmaOptionBox').slideDown();
+        $('#newpharmaOptionText').focus();
+      });
+
+      // Add new option dynamically
+      $('#addpharmaOptionBtn').click(function() {
+        let newText = $('#newpharmaOptionText').val().trim();
+
+        if (newText === "") {
+          alert("Please enter a value!");
+          return;
+        }
+
+        // Check if the option already exists
+        let exists = false;
+        $('#pharmaname option').each(function() {
+          if ($(this).text().toLowerCase() === newText.toLowerCase()) {
+            exists = true;
+          }
+        });
+
+        if (exists) {
+          alert("This option already exists!");
+          return;
+        }
+
+        // Append the new option
+        let newOption = new Option(newText, newText.toLowerCase(), true, true);
+        $('#pharmaname').append(newOption).trigger('change');
+
+        // Clear input and hide box
+        $('#newpharmaOptionText').val('');
+        $('#newpharmaOptionBox').slideUp();
+      });
+
+      // Cancel button hides input box
+      $('#cancelpharmaBtn').click(function() {
+        $('#newpharmaOptionText').val('');
+        $('#newpharmaOptionBox').slideUp();
+      });
+    });
+
+
+
+    // combination
+
+     $(document).ready(function() {
+      // Initialize Select2
+      $('#combinationname').select2({
+        placeholder: "Select a Combination",
+        allowClear: false
+      });
+
+      // Show the add-new-option box
+      $('#showcombinationInputBtn').click(function() {
+        $('#newcombinationOptionBox').slideDown();
+        $('#newcombinationOptionText').focus();
+      });
+
+      // Add new option dynamically
+      $('#addcombinationOptionBtn').click(function() {
+        let newText = $('#newcombinationOptionText').val().trim();
+
+        if (newText === "") {
+          alert("Please enter a value!");
+          return;
+        }
+
+        // Check if the option already exists
+        let exists = false;
+        $('#combinationname option').each(function() {
+          if ($(this).text().toLowerCase() === newText.toLowerCase()) {
+            exists = true;
+          }
+        });
+
+        if (exists) {
+          alert("This option already exists!");
+          return;
+        }
+
+        // Append the new option
+        let newOption = new Option(newText, newText.toLowerCase(), true, true);
+        $('#combinationname').append(newOption).trigger('change');
+
+        // Clear input and hide box
+        $('#newcombinationOptionText').val('');
+        $('#newcombinationOptionBox').slideUp();
+      });
+
+      // Cancel button hides input box
+      $('#cancelcombinationBtn').click(function() {
+        $('#newcombinationOptionText').val('');
+        $('#newcombinationOptionBox').slideUp();
+      });
+    });
+
+
+    // tablet
+     $(document).ready(function() {
+      // Initialize Select2
+      $('#tabletname').select2({
+        placeholder: "Select a Tablet",
+        allowClear: true
+      });
+
+      // Show the add-new-option box
+      $('#showtabletInputBtn').click(function() {
+        $('#newtabletOptionBox').slideDown();
+        $('#newtabletOptionText').focus();
+      });
+
+      // Add new option dynamically
+      $('#addtabletOptionBtn').click(function() {
+        let newText = $('#newtabletOptionText').val().trim();
+
+        if (newText === "") {
+          alert("Please enter a value!");
+          return;
+        }
+
+        // Check if the option already exists
+        let exists = false;
+        $('#tabletname option').each(function() {
+          if ($(this).text().toLowerCase() === newText.toLowerCase()) {
+            exists = true;
+          }
+        });
+
+        if (exists) {
+          alert("This option already exists!");
+          return;
+        }
+
+        // Append the new option
+        let newOption = new Option(newText, newText.toLowerCase(), true, true);
+        $('#tabletname').append(newOption).trigger('change');
+
+        // Clear input and hide box
+        $('#newtabletOptionText').val('');
+        $('#newtabletOptionBox').slideUp();
+      });
+
+      // Cancel button hides input box
+      $('#canceltabletBtn').click(function() {
+        $('#newtabletOptionText').val('');
+        $('#newtabletOptionBox').slideUp();
+      });
+    });
+
+    // category
+
+     $(document).ready(function() {
+      // Initialize Select2
+      $('#categoryname').select2({
+        placeholder: "Select a Category",
+        allowClear: true
+      });
+
+      // Show the add-new-option box
+      $('#showcategoryInputBtn').click(function() {
+        $('#newcategoryOptionBox').slideDown();
+        $('#newcategoryOptionText').focus();
+      });
+
+      // Add new option dynamically
+      $('#addcategoryOptionBtn').click(function() {
+        let newText = $('#newcategoryOptionText').val().trim();
+
+        if (newText === "") {
+          alert("Please enter a value!");
+          return;
+        }
+
+        // Check if the option already exists
+        let exists = false;
+        $('#categoryname option').each(function() {
+          if ($(this).text().toLowerCase() === newText.toLowerCase()) {
+            exists = true;
+          }
+        });
+
+        if (exists) {
+          alert("This option already exists!");
+          return;
+        }
+
+        // Append the new option
+        let newOption = new Option(newText, newText.toLowerCase(), true, true);
+        $('#categoryname').append(newOption).trigger('change');
+
+        // Clear input and hide box
+        $('#newcategoryOptionText').val('');
+        $('#newcategoryOptionBox').slideUp();
+      });
+
+      // Cancel button hides input box
+      $('#cancelcategoryBtn').click(function() {
+        $('#newcategoryOptionText').val('');
+        $('#newcategoryOptionBox').slideUp();
+      });
+    });
+
+    // tablet stock add ajax
+
+     $("#tabletstockaddbtn").click(function(){
+   
+    
+    var mfname = $('#mfname').val();
+    var pharmaname = $('#pharmaname').val();
+    var combinationname = $('#combinationname').val();
+    var tabletname = $('#tabletname').val();
+    var totalnumberofstrip =$('#totalnumberofstrip').val();
+    var numberoftabletinperstrip = $('#numberoftabletinperstrip').val();
+    var totalstriprate = $('#totalstriprate').val();
+    var tabletqty = $('#tabletqty').val();
+    var totalstripmrp = $('#totalstripmrp').val();
+    var pertabletmrp = $('#pertabletmrp').val();
+    var pertabletrate = $('#pertabletrate').val();
+    var expireddate = $('#expireddate').val();
+    var perstriprate = $('#perstriprate').val();
+    var perstripmrp = $('#perstripmrp').val();
+    var categoryname = $('#categoryname').val();
+    // discount per
+    var perstripratepercentage = $('#perstripratepercentage').val();
+    var totalstriprateafterdiscount = $('#totalstriprateafterdiscount').val();
+    var pertabletrateafterdiscount = $('#pertabletrateafterdiscount').val();
+    var perstriprateafterdiscount = $('#perstriprateafterdiscount').val();
+    var perstripdiscountamount =$('#perstripdiscountamount').val();
+    var pertabletdiscountamount = $('#pertabletdiscountamount').val();
+    var totalstripdiscountamount = $('#totalstripdiscountamount').val();
+
+   
+
+    $('#mfnameerror').remove();
+    $('#pharmanameerror').remove();
+    $('#combinationnameerror').remove();
+    $('#tabletnameerror').remove();
+    $('#totalnumberofstriperror').remove();
+    $('#numberoftabletinperstriperror').remove();
+    $('#rateerror').remove();
+    $('#tabletqtyerror').remove();
+    $('#mrperror').remove();
+    $('#pertabletmrperror').remove();
+    $('#pertabletrateerror').remove();
+    $('#expireddateerror').remove();
+    $('#perstripmrperror').remove();
+    $('#perstriprateerror').remove();
+    $('#categorynameerror').remove();
+    
+
+    var errmsg = 0;
+    if (mfname == null){
+         $('#newmfOptionBox').after("<p class='text-danger' id='mfnameerror'>Please Select MF</p>");
+         errmsg = 1
+    }
+    // alert(errmsg)
+    if (pharmaname == null){
+        $('#newpharmaOptionBox').after("<p id='pharmanameerror' class='text-danger'>Please Select Pharmaname</p>");
+        errmsg = 1
+    }
+
+    if (combinationname == null){
+        $('#newcombinationOptionBox').after("<p id='combinationnameerror' class='text-danger'>Please Select Combinationname</p>");
+        errmsg = 1
+    }
+    
+    if (tabletname == null){
+        $('#newtabletOptionBox').after("<p id='tabletnameerror' class='text-danger'>Please Select Tabletname</p>");
+        errmsg = 1
+    }
+
+     if (categoryname == null){
+        $('#newcategoryOptionBox').after("<p id='categorynameerror' class='text-danger'>Please Select Categoryname</p>");
+        errmsg = 1
+    }
+
+    if (totalnumberofstrip == ''){
+        $('#totalnumberofstrip').after("<p id='totalnumberofstriperror' class='text-danger'>Please Select Total Number Of Strip</p>");
+        errmsg = 1
+    }
+
+    if (numberoftabletinperstrip == ''){
+        $('#numberoftabletinperstrip').after("<p id='numberoftabletinperstriperror' class='text-danger'>Please Select Number Of Tablet In Per Strip</p>");
+        errmsg = 1
+    }
+    
+    // if (totalstriprate == ''){
+    //     $('#totalstriprate').after("<p id='rateerror' class='text-danger'>Please Select rate</p>");
+    //     errmsg = 1
+    // }
+    // if (tabletqty == ''){
+    //     $('#tabletqty').after("<p id='tabletqtyerror' class='text-danger'>Please Select tabletqty</p>");
+    //     errmsg = 1
+    // }
+
+    // if (totalstripmrp == '' || totalstripmrp == 'NaN'){
+    //     $('#totalstripmrp').after("<p id='mrperror' class='text-danger'>Please Select mrp</p>");
+    //     errmsg = 1
+    // }
+
+    // if (pertabletmrp == ''){
+    //     $('#pertabletmrp').after("<p id='pertabletmrperror' class='text-danger'>Please Select pertabletmrp</p>");
+    //     errmsg = 1
+    // }
+
+    // if (pertabletrate == ''){
+    //     $('#pertabletrate').after("<p id='pertabletrateerror' class='text-danger'>Please Select Pertabletrate</p>");
+    //     errmsg = 1
+    // }
+
+    if (expireddate == ''){
+        $('#expireddate').after("<p id='expireddateerror' class='text-danger'>Please Select Expireddate</p>");
+        errmsg = 1
+    }
+    
+    if (perstriprate == ''){
+        $('#perstriprate').after("<p id='perstriprateerror' class='text-danger'>Please Select perstriprate</p>");
+        errmsg = 1
+    }
+    if (perstripmrp == ''){
+        $('#perstripmrp').after("<p id='perstripmrperror' class='text-danger'>Please Select perstripmrp</p>");
+        errmsg = 1
+    }
+    
+    if(errmsg){
+        return false
+    }
+      
+        // alert('aasick')
+        $.ajax({
+            type: 'POST',
+            url: '/tabletadd/',
+            data: {
+                mfname : mfname,
+                pharmaname : pharmaname,
+                combinationname : combinationname,
+                tabletname : tabletname,
+                totalnumberofstrip : totalnumberofstrip,
+                numberoftabletinperstrip : numberoftabletinperstrip,
+                totalstriprate : totalstriprate,
+                tabletqty : tabletqty,
+                totalstripmrp : totalstripmrp,
+                pertabletmrp : pertabletmrp,
+                pertabletrate : pertabletrate,
+                expireddate : expireddate,
+                perstriprate : perstriprate,
+                perstripmrp : perstripmrp,
+                categoryname : categoryname,
+                perstripratepercentage : perstripratepercentage ,
+                totalstriprateafterdiscount  : totalstriprateafterdiscount ,
+                pertabletrateafterdiscount : pertabletrateafterdiscount ,
+                perstriprateafterdiscount : perstriprateafterdiscount ,
+                perstripdiscountamount : perstripdiscountamount ,
+                pertabletdiscountamount : pertabletdiscountamount ,
+                totalstripdiscountamount : totalstripdiscountamount ,
+
+
+            },
+            success : function(data){
+                $("#mfname").empty();
+                $("#pharmaname").empty();
+                $("#combinationname").empty();
+                $("#tabletname").empty();
+                $("#categoryname").empty();
+                var totalnumberofstrip =$('#totalnumberofstrip').val('');
+                var numberoftabletinperstrip = $('#numberoftabletinperstrip').val('');
+                var totalstriprate = $('#totalstriprate').val('');
+                var tabletqty = $('#tabletqty').val('');
+                var totalstripmrp = $('#totalstripmrp').val('');
+                var pertabletmrp = $('#pertabletmrp').val('');
+                var pertabletrate = $('#pertabletrate').val('');
+                var expireddate = $('#expireddate').val('');
+                var perstriprate = $('#perstriprate').val('');
+                var perstripmrp = $('#perstripmrp').val('');
+                var categoryname = $('#categoryname').val('');
+                // per
+                var perstripratepercentage = $('#perstripratepercentage').val('');
+                var totalstriprateafterdiscount = $('#totalstriprateafterdiscount').val('');
+                var pertabletrateafterdiscount = $('#pertabletrateafterdiscount').val('');
+                var perstriprateafterdiscount = $('#perstriprateafterdiscount').val('');
+                var perstripdiscountamount =$('#perstripdiscountamount').val('');
+                var pertabletdiscountamount = $('#pertabletdiscountamount').val('');
+                var totalstripdiscountamount = $('#totalstripdiscountamount').val('');
+            }
+          })
+  });
+
+  </script>
+
+</body>
+</html>

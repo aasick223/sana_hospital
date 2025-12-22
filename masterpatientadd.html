@@ -1,0 +1,172 @@
+
+
+
+
+
+
+
+
+
+
+
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+<style>
+    .pad {
+    padding: 50px;
+}
+    </style>
+<h1 class="text-center">Master Patient Add</h1>
+
+ <h3 class="text-center"><a href="{% url 'masterpatientlistforcheckup' %}"><u>Master Patient List
+    
+ </u></a></h3>
+
+<div class="container bg-info pad">
+    <div class="row mt-4" style="margin-top: 30px";>
+        <div class="col-md-6" id="newpatientnamediv"><b>NAME :</b> <input type="text" id="newpatientname" class="form-control"></div>
+        <!-- <p id="newpatientnameerror"></p> -->
+        <div class="col-md-6" id="newpatientagediv"><b>AGE : </b><input type="number" id ="newpatientage" class="form-control"></div>
+        <!-- <p id="newpatientageerror"></p> -->
+    </div>
+
+    <div class="row mt-4" style="margin-top: 30px";>
+        <div class="col-md-6" id="newpatientsexdiv"><b>SEX :</b> <input id="newpatientsex" type="text" class="form-control"></div>
+        <div class="col-md-6" id="newpatientcategorydiv"><b>CATEGORY : </b><input id="newpatientcategory" type="text" class="form-control"></div>
+    </div>
+
+    
+    <div class="row mt-4" style="margin-top: 30px";>
+        <div class="col-md-6" id="newpatienthusbanddiv"><b>HUSBAND NAME *</b> <input id="newpatienthusband" type="text" class="form-control"></div>
+        <div class="col-md-6" id="newpatientaddressdiv"><b>ADDRESS * </b><input id="newpatientaddress" type="text" class="form-control"></div>
+    </div>
+
+    <div class="row mt-4" style="margin-top: 30px";>
+        <div class="col-md-6" id="newpatientcontactdiv"><b>CONTACT *</b> <input id="newpatientcontact" type="text" class="form-control"></div>
+        <div class="col-md-6" id="newpatientoldfilenumberdiv"><b>OLD FILE NUMBER *</b><input id="newpatientoldfilenumber" type="text" class="form-control"></div>
+    </div>
+
+    <div class="row mt-4" style="margin-top: 30px";>
+        <div class="col-md-6" id="newpatientconsultantfeesdiv"><b>CONSULTANT FEES *</b> <input id="newpatientconsultantfees" type="text" class="form-control"></div>
+    </div>
+
+     <div class="row" style="margin-top: 50px";>
+      <!-- <a href='{% url 'tabletlist' %}'><button id ="tabletstockaddbtn" type="submit" value="Submit">Submit</button></a> -->
+      <a ><button class="bg-primary text-white pull-right" id ="newpatientaddbtn" type="submit" value="Submit" style="margin-left:10px;">Submit</button></a>
+      <!-- <a href='{% url 'tabletlist' %}'><button class="bg-primary text-white pull-right">Tablet_list</button></a> -->
+    </div>
+</div>
+
+
+
+<script>
+     $("#newpatientaddbtn").click(function(){
+   
+    
+    var newpatientname = $('#newpatientname').val();
+    var newpatientage = $('#newpatientage').val();
+    var newpatientsex = $('#newpatientsex').val();
+    var newpatientcategory = $('#newpatientcategory').val();
+    var newpatienthusband =$('#newpatienthusband').val();
+    var newpatientaddress = $('#newpatientaddress').val();
+    var newpatientcontact = $('#newpatientcontact').val();
+    var newpatientoldfilenumber = $('#newpatientoldfilenumber').val();
+    var newpatientconsultantfees = $('#newpatientconsultantfees').val();
+
+
+    $('#newpatientnameerror').remove();
+    $('#newpatientageerror').remove();
+    $('#newpatientsexerror').remove();
+    $('#newpatientcategoryerror').remove();
+    $('#newpatienthusbanderror').remove();
+    $('#newpatientaddresserror').remove();
+    $('#newpatientcontacterror').remove();
+    $('#newpatientoldfilenumbererror').remove();
+    $('#newpatientconsultantfeeserror').remove();
+    
+
+    var errmsg = 0;
+    if (newpatientname == ''){
+         $('#newpatientnamediv').append("<p class='text-danger' id='newpatientnameerror'>Please Enter Patientname</p>");
+         errmsg = 1
+    }
+    // alert(errmsg)
+    if (newpatientage == ''){
+        $('#newpatientagediv').append("<p id='newpatientageerror' class='text-danger'>Please Enter Patientage</p>");
+        errmsg = 1
+    }
+
+    if (newpatientsex == ''){
+        $('#newpatientsexdiv').append("<p id='newpatientsexerror' class='text-danger'>Please Enter Patientsex</p>");
+        errmsg = 1
+    }
+    
+    if (newpatientcategory == ''){
+        $('#newpatientcategorydiv').append("<p id='newpatientcategoryerror' class='text-danger'>Please Enter Patientcategory </p>");
+        errmsg = 1
+    }
+
+     if (newpatienthusband == ''){
+        $('#newpatienthusbanddiv').append("<p id='newpatienthusbanderror' class='text-danger'>Please Enter Patienthusband</p>");
+        errmsg = 1
+    }
+
+    if (newpatientaddress == ''){
+        $('#newpatientaddressdiv').append("<p id='newpatientaddresserror' class='text-danger'>Please Enter Patientaddress</p>");
+        errmsg = 1
+    }
+
+    if (newpatientcontact == ''){
+        $('#newpatientcontactdiv').append("<p id='newpatientcontacterror' class='text-danger'>Please Enter Patientcontact</p>");
+        errmsg = 1
+    }
+    
+    if (newpatientoldfilenumber == ''){
+        $('#newpatientoldfilenumberdiv').append("<p id='newpatientoldfilenumbererror' class='text-danger'>Please Enter Patientoldfilenumber</p>");
+        errmsg = 1
+    }
+    if (newpatientconsultantfees == ''){
+        $('#newpatientconsultantfeesdiv').append("<p id='newpatientconsultantfeeserror' class='text-danger'>Please Enter Patientconsultantfees</p>");
+        errmsg = 1
+    }
+
+    
+    if(errmsg){
+        return false
+    }
+      
+        // alert('aasick')
+        $.ajax({
+            type: 'POST',
+            url: '/newpatientadd/',
+            data: {
+                newpatientname : newpatientname,
+                newpatientage : newpatientage,
+                newpatientsex : newpatientsex,
+                newpatientcategory : newpatientcategory,
+                newpatienthusband : newpatienthusband,
+                newpatientaddress : newpatientaddress,
+                newpatientcontact : newpatientcontact,
+                newpatientoldfilenumber : newpatientoldfilenumber,
+                newpatientconsultantfees : newpatientconsultantfees
+
+            },
+            success : function(data){
+                alert('success')
+                console.log('success')
+                var newpatientname =$('#newpatientname').val('');
+                var newpatientage = $('#newpatientage').val('');
+                var newpatientsex = $('#newpatientsex').val('');
+                var newpatientcategory = $('#newpatientcategory').val('');
+                var newpatienthusband = $('#newpatienthusband').val('');
+                var newpatientaddress = $('#newpatientaddress').val('');
+                var newpatientcontact = $('#newpatientcontact').val('');
+                var newpatientoldfilenumber = $('#newpatientoldfilenumber').val('');
+                var newpatientconsultantfees = $('#newpatientconsultantfees').val('');
+    
+            }
+          })
+  });
+
+
+</script>

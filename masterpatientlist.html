@@ -1,0 +1,241 @@
+{% load static %}
+
+<html>
+
+<head>
+ 
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+  <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+<script>
+        $(document).ready(function(){
+  $("#patientlirowclick").DataTable();
+  
+  $('.edit').click(function(){
+     $('#editModal').modal('show');
+  });
+});
+</script>
+<style>
+
+    #patientlirowclick{
+    background-color: #edf2fa;
+  }
+</style>
+</head>
+  
+<body>
+  <div class="container">
+      <h1 class="text-center">Master Patient List</h1>
+      <div class="row pull-right">
+         <h3 class=""><a href="{% url 'home' %}"><u>Tablet stock Add /</u></a></h3>
+         <h3 class=""><a href="{% url 'tabletlist' %}"><u>Tablet stock List</u></a></h3>
+      </div>
+   
+    <!-- <h3 class="pull-right"><a href="{% url 'masterpatientlist' %}"><u>Master Patient List / </u></a></h3> -->
+      <table id="patientlirowclick" class="table table-bordered w-100">
+        <thead>
+            <tr>
+                <th>newfileno</th>
+                <th>patient_name</th>
+                <th>age</th>
+                <th>sex</th>
+                <th>husband_name</th>
+                <th>old_file_no</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in masterpatient_list%}
+            <tr data-id= {{i.patientid}}>
+                <td>{{i.patientid}}</td>
+                <td>{{i.patientname}}</td>
+                <td>{{i.age}}</td>
+                <td>{{i.sex}}</td>
+                <td>{{i.husband_name}}</td>
+                <td>{{i.oldfileno}}</td>
+            </tr>
+            {% endfor %}
+        
+        </tbody>
+      </table>
+</div>
+
+<script>
+
+
+    $("#patientlirowclick tr").click(function () {
+    let rowId = $(this).data("id");
+    // alert(rowId)
+    // Redirect to Django URL
+    window.location.href = "/patient/" + rowId + "/";
+
+       $.ajax({
+        url: "/appendratedetail/",  
+        type: "POST",
+        data: {
+            rowId: rowId,
+        },
+        success: function (data) {
+            alert('aasick')
+            // $("#result").html(data);
+            alert(data)
+           
+
+        }
+      })
+});
+
+
+    function addtotablet(tabletid) {
+         
+          $.ajax({
+                type:'POST',
+                url:'/addtocart/',
+                data:{
+                  tabletid:tabletid
+                },
+                success : function(data){
+                //    console.log()
+                  //  var tableData = {};
+                  // let row = $(this);
+                  //  let rowObject = {};
+                  
+                   for (item of data.addtocartlist) {
+                      console.log(item,'item')
+
+
+                    $('#acart').append('<tbody><tr><td id="carttabletname"><input value="'+item.tabletname+'"></td><td><input id="pertabletqty" class="form-calc form-qty " value="1"></td><td><input class="form-calc form-cost" id="carttabletmrp" value='+item.pertabletmrp+' disabled></td><td><input class="form-line" id="onetablettotalrate" value='+item.pertabletmrp+' disabled></td></tr></tbody>')
+                      
+                    alert('successfully appended123')
+                                              
+                    }                      
+                                        
+                }
+          })
+
+        
+}
+</script>
+
+
+<script>
+  //  $("#pertabletqty").click(function(){
+   
+  $(document).ready(function() {
+    $("#order-entry").on("keyup", ".form-calc", function() {
+        var parent = $(this).closest("tr");
+        parent.find(".form-line").val((parent.find(".form-qty").val() * parent.find(".form-cost").val()).toFixed(2));
+        var total = 0;
+        $(".form-line").each(function(){
+            total += parseFloat($(this).val()||0);
+        });
+       $("#total").text(total.toFixed(2));
+
+      
+    });
+});
+
+  // });
+
+function addCommas(n){
+    var s=n.split('.')[1];
+    (s) ? s="."+s : s="";
+    n=n.split('.')[0]
+    while(n.length>3){
+        s=","+n.substr(n.length-3,3)+s;
+        n=n.substr(0,n.length-3)
+    }
+    return n+s
+}
+
+// <!-- </script>
+
+
+
+
+
+
+<script>               
+//                               $('#carticon').on('click', function() {
+//                                                   $('#acart tbody tr').each(function() {
+//                                                     let row = $(this);
+//                                                      tabletqty = row.find('td:eq(1) input').val();
+//                                                       if (tabletqty == 1){
+//                                                                 var total = 0;
+//                                                                 $(".form-line").each(function(){
+//                                                                     total += parseFloat($(this).val()||0);
+//                                                                 });
+//                                                               $("#total").text(total.toFixed(2))
+//                                                           }
+//                                                   })
+//                               }) 
+
+//                                             $('#cartsubmit').on('click', function() {
+                                  
+//                                                 let tableData = [];
+//                                                 $(document).ready(function() {
+                                            
+//                                                 $('#acart tbody tr').each(function() {
+//                                                     let row = $(this);
+//                                                     let rowObject = {}; // Object to store data for the current row
+//                                                     rowObject.tabletname = row.find('td:eq(0) input').val(); // Get text from the first column
+//                                                     tabletqty = row.find('td:eq(1) input').val();
+//                                                     pertabletmrp = row.find('td:eq(2) input').val();
+//                                                     onetablettotalrate = row.find('td:eq(3) input').val();
+//                                                     // console.log("aasick successfully")
+//                                                     rowObject.tabletqty = row.find('td:eq(1) input').val(); // Get value from an input in the second column
+//                                                     rowObject.pertabletmrp = row.find('td:eq(2) input').val(); // Get text from the third column
+//                                                     rowObject.onetablettotalrate = row.find('td:eq(3) input').val();
+                                                  
+//                                                     tableData.push(rowObject); // Add the row object to the main array
+//                                               });  
+//                                                });
+//                                                totaltablet_rate = $("#total").text();
+
+
+//                                                $.ajax({
+//                                                         type:'POST',
+//                                                         url:'/cartfinalsubmit/',
+//                                                         data:{
+//                                                           // tableData:tableData
+//                                                           tableData:JSON.stringify(tableData),
+//                                                           totaltablet_rate : totaltablet_rate
+
+//                                                         },
+//                                                         success : function(data){}
+//                                                       })
+//                                                 });                       
+</script>
+ 
+                                              <!-- var tableData = JSON.stringify(tableData);  -->
+                                                
+                                              
+
+  <!-- // $(document).ready(function(){
+// $(".checkout").on("keyup", ".quantity", function(){
+	// 	var price = +$(".price").data("price");
+	// 	var quantity = +$(this).val();
+	// 	$("#total").text("$" + price * quantity);
+	// })
+  // }) -->
+
+
+<!-- <script>
+function calc(){
+  var cartqty = document.getElementById("cartqty").value;
+  var cartqty = parseInt(cartqty, 10);
+  var pertabletmrp = document.getElementById("pertabletmrp").value;
+  // var pertabletmrp = parseInt(pertabletmrp, 10);
+  var total = cartqty * pertabletmrp;
+  document.getElementById("pertabletmrp").value = total;
+}
+</script> -->
+
+
+</body>
+</html>

@@ -1,0 +1,1015 @@
+<!-- new tablet in loop rate start -->
+
+
+<head>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> -->
+<!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" /> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script> -->
+<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css" rel="stylesheet" /> -->
+<!-- <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script> -->
+<!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Select2 CSS & JS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" /> -->
+
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+  <meta charset="UTF-8">
+  <title>Tablet Rate Finder</title>
+  <style>
+
+  </style>
+
+  <script>
+//     $(document).ready(function () {
+//     $(".tabletname").select2({
+//         placeholder: "Select Brand",
+//         width: "100%"
+//     });
+// });
+
+//  $('#mfname').select2({
+//         placeholder: "Select a Mf",
+//         allowClear: true
+//       });
+    </script>
+</head>
+<!-- new tablet in loop rate end -->
+
+
+{{earliertablet_list}}
+
+<div class="container-fluid">
+
+    <h1 class="text-center">Tablet Counter</h1>
+
+    <div class="text-center">
+        {% for j in single_patientdetail_for_tablet %}
+            <h4><b>Name:</b> {{ j.patientname }}</h4>
+            <h4><b>ID:</b> {{ j.patientid }}</h4>
+        {% endfor %}
+    </div>
+
+    
+   
+
+    <!-- RESPONSIVE WRAPPER -->
+    <div class="table-responsive">
+        <a href="{% url 'home' %}" class=" text-primary text-decoration-underline fs-5"><u>Tablet Stock Add</u>/</a>
+        <a href="{% url 'tabletlist' %}" class="fs-5"><u>Tablet Stock List</u>/</a>
+        <a href="{% url 'masterpatientlist' %}" class="fs-5"><u>Master Patient List</u></a>
+        <button id="addNewBtn" class="btn btn-success btn-md pull-right mb-3">ADD</button>
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+        <table id="medicineTable" class="table table-bordered table-sm align-middle mt-3">
+
+            <thead class="table-light">
+                <tr>
+                    <th>Tablet ID</th>
+                    <th>Expiry</th>
+                    <th>Brand *</th>
+                    <th>Combination *</th>
+                    <th>Category *</th>
+                    <th>Qty</th>
+                    <th>GST(%)</th>
+                    <th>Days</th>
+                    <th>Food</th>
+                    <th>Morn</th>
+                    <th>Noon</th>
+                    <th>Night</th>
+                    <th>MRP ₹</th>
+                    <th>Total</th>
+                    <th>GST(₹)</th>
+                    <th>CGST</th>
+                    <th>SGST</th>
+                </tr>
+            </thead>
+
+            <tbody id="tabletforpatientnewrowadd">
+
+                <tr>
+
+                    <!-- BRAND -->
+                    <!-- <td>
+                        <select class="form-select form-select-sm tabletname">
+                            <option disabled selected>Select Brand</option>
+                            {% for tablet in tablet_list %}
+                                <option value="{{tablet.tabletname}}">{{tablet.tabletname}}</option>
+                            {% endfor %}
+                        </select>
+                    </td> -->
+
+                    <!-- <select id="tabletname" style="width:250px;">
+                        {% for tablet in tablet_list %}
+                        <option id="">{{tablet.tabletname}}</option>
+                        {% endfor %}
+                    </select> -->
+                    <td><input type="text" class="form-control form-control-sm tabletid" readonly></td>
+
+                    <td>
+                    <input type="text" class="form-control form-control-sm expiry" readonly>
+                    </td>
+
+                    <td class="d-none">
+                        <input type="hidden" class="tabletid" name="tabletid[]">
+                    </td>
+
+                    
+                    </td>
+
+                    <td>
+                        <input list="brandlist" class="form-control input-sm tabletname" placeholder="Select Brand">
+                        <datalist id="brandlist">
+                            {% for tablet in tablet_list %}
+                            <option value="{{tablet.tabletname}}">
+                            {% endfor %}
+                        </datalist>
+                     </td>
+
+                    <!-- COMBINATION -->
+                    <!-- <td>
+                        <select class="form-select form-select-sm combinationname">
+                            <option disabled selected>Select Combination</option>
+                            {% for combination in combination_list %}
+                                <option value="{{combination.combinationname}}">{{combination.combinationname}}</option>
+                            {% endfor %}
+                        </select>
+                    </td> -->
+
+                        <td>
+                            <input list="combinationlist" class="form-control input-sm combinationname" placeholder="Select Combination">
+                            <datalist id="combinationlist">
+                                {% for combination in combination_list %}
+                                <option value="{{combination.combinationname}}">
+                                {% endfor %}
+                            </datalist>
+                        </td>
+
+
+                    <!-- CATEGORY -->
+                    <!-- <td>
+                        <select class="form-select form-select-sm category_name">
+                            <option disabled selected>Select Category</option>
+                            {% for category in category_list %}
+                                <option value="{{category.categoryname}}">{{category.categoryname}}</option>
+                            {% endfor %}
+                        </select>
+                    </td> -->
+                    <td>
+                        <input list="categorylist" class="form-control input-sm category_name" placeholder="Select Category">
+                        <datalist id="categorylist">
+                            {% for category in category_list %}
+                            <option value="{{category.categoryname}}">
+                            {% endfor %}
+                        </datalist>
+                    </td>
+
+
+
+                    <!-- INPUTS -->
+                    <td><input type="number" class="form-control form-control-sm qty"></td>
+                    <td><input type="number" class="form-control form-control-sm gst"></td>
+                    <td><input type="number" min="1" class="form-control form-control-sm days"></td>
+
+                    <!-- FOOD -->
+                                <td>
+                    <input list="foodList" class="form-control input-sm food_type" placeholder="Select Food Type">
+                    <datalist id="foodList">
+                        <option value="before">
+                        <option value="after">
+                    </datalist>
+                </td>
+
+                    <!-- COUNTS -->
+                    <td><input type="number" min="0" class="form-control form-control-sm morning"></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm afternoon"></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm night"></td>
+
+                    <!-- MRP -->
+                    <td><input type="text" class="form-control form-control-sm pertabletmrp" readonly></td>
+
+                    <!-- TOTAL -->
+                    <td><input type="number" class="form-control form-control-sm total" readonly></td>
+
+                    <!-- GST VALUES -->
+                    <td><input type="text" id="total_gst" class="form-control form-control-sm total_gst" readonly></td>
+                    <td class="cgst text-center">0.00</td>
+                    <td class="sgst text-center">0.00</td>
+                    <td><button type="button" class="btn btn-danger btnRemove">X</button></td>
+                    
+
+                </tr>
+
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+  <h4 class="text-center">Overall Tablet Total:  <input type="number" id="overalltablettotal" readonly><br></h4>
+    <div id="tableError" style="display:none;"></div>
+
+
+
+<div class="container mt-4">
+    <h4>Tax and Scan and Discount</h4>
+
+    <div class="row g-3">
+
+        <div class="col-md-3">
+            <label class="form-label">Sales Tax (%)</label>
+            <input type="number" id="salestax_percent" class="form-control form-control-sm"
+                   placeholder="Sales Tax %" step="0.01">
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Service Charge (₹)</label>
+            <input type="number" class="form-control form-control-sm"
+                   id="service_charge" value="0">
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Delivery Charge (₹)</label>
+            <input type="number" class="form-control form-control-sm"
+                   id="delivery_charge" value="0">
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Scan Charge (₹)</label>
+            <input type="number" class="form-control form-control-sm"
+                   id="scan_charge" value="0">
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Net Amount (₹)</label>
+            <input type="text" class="form-control form-control-sm"
+                   id="net_amount" readonly>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="container mt-4">
+    <h4>Payment Section</h4>
+
+    <div class="row">
+        <div class="col-4 mb-3">
+            <label class="form-label">Cash Paid (₹)</label>
+            <input type="number" id="cash_paid" class="form-control form-control-sm" placeholder="Enter cash amount">
+        </div>
+
+        <div class="col-4 mb-3">
+            <label class="form-label">GPay / UPI Paid (₹)</label>
+            <input type="number" id="gpay_paid" class="form-control form-control-sm" placeholder="Enter GPay amount">
+        </div>
+
+        <div class="col-4 mb-3">
+            <label class="form-label">Remaining Amount (₹)</label>
+            <input type="number" id="remaining_amount" class="form-control form-control-sm" readonly>
+        </div>
+    </div>
+</div>
+    
+
+<div class="container mt-4">
+    <h4>Overall Gst & Cgst & Sgst</h4>
+    <div class="row mt-3">
+        <div class="col-md-4">
+            <label>Overall GST (₹)</label>
+            <input type="text" id="overall_gst" class="form-control form-control-sm" readonly>
+        </div>
+
+        <div class="col-md-4">
+            <label>Overall CGST (₹)</label>
+            <input type="text" id="overall_cgst" class="form-control form-control-sm" readonly>
+        </div>
+
+        <div class="col-md-4">
+            <label>Overall SGST (₹)</label>
+            <input type="text" id="overall_sgst" class="form-control form-control-sm" readonly>
+        </div>
+    </div>
+
+     <div class="row" style="margin-top: 50px";>
+      <!-- <a href='{% url 'tabletlist' %}'><button id ="tabletstockaddbtn" type="submit" value="Submit">Submit</button></a> -->
+            <div class="text-end">
+          <button class="btn btn-primary" id="tabletstockaddbtn" type="submit">
+              Submit
+          </button>
+      </div>
+</div>
+
+
+
+  <script>
+    $(document).on("click", "#addNewBtn", function () {
+
+    $.ajax({
+        url: "/add_newtablet_btn/",  // Django URL path
+        type: "POST",
+        data: {
+            action: "new",
+            csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
+        },
+        success: function (data) {
+            // alert("Data inserted successfully!");
+
+            let lastRow = $("#medicineTable tr:last");
+
+            let t = lastRow.find(".tabletname").val();
+            let c = lastRow.find(".combinationname").val();
+            let g = lastRow.find(".category_name").val();
+            let qty = lastRow.find(".qty").val();
+
+            // If any field missing → show error + block add row
+            if (!t || !c || !g || !qty) {
+                $("#tableError")
+                    .html("<p style='color:red;font-weight:bold;padding:6px;'>⚠ Please select Tablet, Combination & Category & Quantity before adding new row!</p>")
+                    .css({
+                        "background": "#ffe6e6",
+                        "border": "1px solid red",
+                        "margin-top": "6px"
+                    })
+                    .show();
+                return; // stop row adding
+            }
+            //error start
+             
+            //error end
+
+            let tablets = data.tablet_list;
+            let combinations = data.combination_list;
+            let category = data.category_list;
+
+            // Example: Append new row using response data
+        
+         let newRow = `
+                <tr data-id="">
+
+                    <td><input type="text" class="form-control form-control-sm tabletid" readonly></td>
+
+                    <td>
+                    <input type="text" class="form-control form-control-sm expiry" readonly>
+                    </td>
+
+                    <td>
+                        <input list="brandlist" class="form-control input-sm tabletname" placeholder="Select Brand">
+                        <datalist id="brandlist">
+                            {% for tablet in tablet_list %}
+                            <option value="{{tablet.tabletname}}">
+                            {% endfor %}
+                        </datalist>
+                     </td>
+
+                     <td>
+                            <input list="combinationlist" class="form-control input-sm combinationname" placeholder="Select Combination">
+                            <datalist id="combinationlist">
+                                {% for combination in combination_list %}
+                                <option value="{{combination.combinationname}}">
+                                {% endfor %}
+                            </datalist>
+                        </td>
+                       <td>
+                        <input list="categorylist" class="form-control input-sm category_name" placeholder="Select Category">
+                        <datalist id="categorylist">
+                            {% for category in category_list %}
+                            <option value="{{category.categoryname}}">
+                            {% endfor %}
+                        </datalist>
+                    </td>
+                    
+                    <td><input type="number" class="form-control form-control-sm qty"></td>
+                    <td><input type="number" class="form-control form-control-sm gst"></td>
+                    <td><input type="number" min="1" class="form-control form-control-sm days"></td>
+
+                    <!-- FOOD -->
+                         <td>
+                    <input list="foodList" class="form-control input-sm food_type" placeholder="Select Food Type">
+                    <datalist id="foodList">
+                        <option value="before">
+                        <option value="after">
+                    </datalist>
+                </td>
+
+
+                    <!-- COUNTS -->
+                    <td><input type="number" min="0" class="form-control form-control-sm morning"></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm afternoon"></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm night"></td>
+
+                    <!-- MRP -->
+                    <td><input type="text" class="form-control form-control-sm pertabletmrp" readonly></td>
+
+                    <!-- TOTAL -->
+                    <td><input type="number" class="form-control form-control-sm total" readonly></td>
+
+                    <!-- GST VALUES -->
+                    <td><input type="text" id="total_gst" class="form-control form-control-sm total_gst" readonly></td>
+                    <td class="cgst text-center">0.00</td>
+                    <td class="sgst text-center">0.00</td>
+                    <td><button type="button" class="btn btn-danger btnRemove">X</button></td>
+                    </tr>
+            `;
+
+            $("#tabletforpatientnewrowadd").append(newRow);
+             $("#tableError").hide();
+
+              // $("#medicineTable tbody").append(row);
+
+            let addedRow = $("#medicineTable tr:last");
+
+            // Add tablet list
+           tablets.forEach(function(item) {
+                addedRow.find(".tabletname").append(`
+                    <option>${item.tabletname}</option>
+                `);
+            });
+
+            // Add combination list
+            combinations.forEach(function(item) {
+                addedRow.find(".combinationname").append(`
+                    <option>${item.combinationname}</option>
+                `);
+            });
+
+            category.forEach(function(item) {
+                addedRow.find(".category_name").append(`
+                    <option>${item.categoryname}</option>
+                `);
+            });
+
+
+        },
+        error: function () {
+            alert("Failed to insert!");
+        }
+    });
+});
+
+  </script>
+
+
+  {{ earliertablet_list|json_script:"mydata" }}
+  
+
+  <script>
+
+    let medicines = JSON.parse(document.getElementById("mydata").textContent);
+
+
+
+
+    function isDuplicateMedicine(row) {
+
+    let t = row.find(".tabletname").val();
+    let c = row.find(".combinationname").val();
+    let g = row.find(".category_name").val();
+
+    let isDuplicate = false;
+
+    $("#medicineTable tbody tr").each(function () {
+
+        // ❗ ignore fifo rows
+        if ($(this).hasClass("fifo-row")) return;
+
+        // ❗ ignore same row
+        if (this === row[0]) return;
+
+        let t2 = $(this).find(".tabletname").val();
+        let c2 = $(this).find(".combinationname").val();
+        let g2 = $(this).find(".category_name").val();
+
+        if (t && c && g && t === t2 && c === c2 && g === g2) {
+            isDuplicate = true;
+            return false; // break loop
+        }
+    });
+
+    return isDuplicate;
+}
+
+
+function applyFIFO(row, qtyNeeded) {
+
+    clearFifoRows();
+
+    let t = row.find(".tabletname").val();
+    let c = row.find(".combinationname").val();
+    let g = row.find(".category_name").val();
+
+    if (!t || !c || !g || qtyNeeded <= 0) return;
+
+    // 1️⃣ Get matching batches
+    let batches = medicines
+        .filter(m =>
+            m.tabletname === t &&
+            m.combinationname === c &&
+            m.category_name === g &&
+            parseFloat(m.tabletqty) > 0
+        )
+        .sort((a, b) => new Date(a.expireddate) - new Date(b.expireddate)); // FIFO
+
+    if (!batches.length) {
+        $("#tableError").html("❌ No stock available").show();
+        return;
+    }
+
+    let totalAvailable = batches.reduce((s, b) => s + parseFloat(b.tabletqty), 0);
+
+    if (qtyNeeded > totalAvailable) {
+        $("#tableError").html(`❌ Only ${totalAvailable} qty available`).show();
+        row.find(".qty").val("");
+        return;
+    }
+
+    $("#tableError").hide();
+
+    // 🔥 Remove previously auto-added FIFO rows
+    // row.nextAll(".fifo-row").remove();
+
+    let remaining = qtyNeeded;
+    let currentRow = row;
+
+    for (let batch of batches) {
+
+        if (remaining <= 0) break;
+
+        let take = Math.min(remaining, batch.tabletqty);
+
+        currentRow.find(".tabletid").val(batch.tabletid);
+        currentRow.find(".pertabletmrp").val(batch.pertabletmrp);
+        currentRow.find(".qty").val(take);
+        currentRow.find(".expiry").val(batch.expireddate);
+        currentRow.find(".total").val((take * batch.pertabletmrp).toFixed(2));
+
+        remaining -= take;
+
+        // 2️⃣ Need next expiry → create new row
+        if (remaining > 0) {
+
+            let newRow = $("#medicineTable tbody tr:first").clone();
+            newRow.addClass("fifo-row");
+
+            newRow.find("input").val("");
+            newRow.find(".cgst,.sgst").text("0.00");
+
+            $("#tabletforpatientnewrowadd").append(newRow);
+
+            newRow.find(".tabletname").val(t).prop("disabled", true);
+            newRow.find(".combinationname").val(c).prop("disabled", true);
+            newRow.find(".category_name").val(g).prop("disabled", true);
+
+            newRow.find(".qty")
+            .prop("readonly", true)
+            .addClass("bg-light");
+
+            currentRow = newRow;
+        }
+    }
+
+    calculateGrandTotal();
+}
+
+function clearFifoRows() {
+    // $("#medicineTable tbody .fifo-row").remove();
+}
+
+// $(document).on("change", ".tabletname, .combinationname, .category_name", function () {
+//     let row = $(this).closest("tr");
+
+//     row.find(".tabletid,.expiry,.pertabletmrp,.qty,.total").val("");
+//     // row.nextAll(".fifo-row").remove();
+
+//     applyFIFO(row, 1); // default qty
+// });
+
+$(document).on("change", ".tabletname, .combinationname, .category_name", function () {
+
+    let row = $(this).closest("tr");
+
+    let t = row.find(".tabletname").val();
+    let c = row.find(".combinationname").val();
+    let g = row.find(".category_name").val();
+
+    // reset fields
+    row.find(".tabletid,.expiry,.pertabletmrp,.qty,.total").val("");
+
+    if (!t || !c || !g) return;
+
+    // ❌ DUPLICATE CHECK
+    if (isDuplicateMedicine(row)) {
+
+        $("#tableError")
+            .html("❌ This Tablet + Combination + Category is already selected. Please choose another.")
+            .show();
+
+        // clear only selection, NOT whole row
+        row.find(".tabletname,.combinationname,.category_name").val("");
+        return;
+    }
+
+    $("#tableError").hide();
+
+    // ✅ FIFO should work normally
+    applyFIFO(row, 1);
+});
+
+
+
+
+
+
+// $("#addNewBtn").on("click", function () {
+
+//     let firstRow = $("#medicineTable tbody tr:first");
+
+//     let t = firstRow.find(".tabletname").val();
+//     let c = firstRow.find(".combinationname").val();
+//     let g = firstRow.find(".category_name").val();
+
+//     // ❌ If first row not selected, block add
+//     if (!t || !c || !g) {
+//         $("#tableError").html("⚠ Please select Tablet, Combination & Category in first row").show();
+//         return;
+//     }
+
+//     // ✅ Clone a clean row
+//     let newRow = $("#medicineTable tbody tr:first").clone();
+
+//     // remove fifo mark if any
+//     newRow.removeClass("fifo-row");
+
+//     // clear calculation fields
+//     newRow.find(".qty,.pertabletmrp,.expiry,.total,.tabletid").val("");
+//     newRow.find(".cgst,.sgst").text("0.00");
+
+//     // 🔥 SET FIRST ROW VALUES
+//     newRow.find(".tabletname").val(t).prop("disabled", false);
+//     newRow.find(".combinationname").val(c).prop("disabled", false);
+//     newRow.find(".category_name").val(g).prop("disabled", false);
+
+//     // qty editable
+//     newRow.find(".qty").prop("readonly", false);
+
+//     $("#tabletforpatientnewrowadd").append(newRow);
+
+//     $("#tableError").hide();
+// });
+
+
+
+</script>
+
+
+
+<script>
+function parseNumber(v) {
+    if (v === undefined || v === null) return 0;
+    // allow commas like "1,234.56"
+    v = String(v).trim().replace(/,/g, "");
+    return isNaN(parseFloat(v)) ? 0 : parseFloat(v);
+}
+
+//  gst
+$(document).on("keyup change", ".pertabletmrp, .qty, .gst", function () {
+
+    let row = $(this).closest("tr");
+
+    let rate = parseFloat(row.find(".pertabletmrp").val()) || 0;
+    let qty = parseFloat(row.find(".qty").val()) || 0;
+    let gst = parseFloat(row.find(".gst").val()) || 0;
+
+    // already calculated total
+    let total = rate * qty;
+
+    // GST Split (extract GST portion)
+    let gstAmount = total * (gst / (100 + gst));
+
+    // alert(gstAmount)
+    let cgst = gstAmount / 2;
+    let sgst = gstAmount / 2;
+    
+    row.find("#total_gst").val(gstAmount.toFixed(2));
+    row.find(".cgst").text(cgst.toFixed(2));
+    row.find(".sgst").text(sgst.toFixed(2));
+    row.data("gstAmount", gstAmount);
+    calculateOverallGST(); //
+
+});
+
+function calculateOverallGST() {
+
+    let overallGST = 0;
+
+    $("#medicineTable tbody tr").each(function () {
+        let rowGST = $(this).data("gstAmount") || 0;
+        overallGST += rowGST;
+    });
+
+    let overallCGST = overallGST / 2;
+    let overallSGST = overallGST / 2;
+
+    $("#overall_gst").val(overallGST.toFixed(2));
+    $("#overall_cgst").val(overallCGST.toFixed(2));
+    $("#overall_sgst").val(overallSGST.toFixed(2));
+}
+
+
+
+
+function calculateGrandTotal() {
+    let grand = 0;
+
+    $(".total").each(function () {
+        grand += parseFloat($(this).val()) || 0;
+    });
+
+    $("#overalltablettotal").val(grand.toFixed(2));
+    // sales tax
+        let taxPercent = parseFloat($("#salestax_percent").val()) || 0; // if blank, treat as 0
+
+        let serviceCharge = parseFloat($("#service_charge").val()) || 0;
+        let deliveryCharge = parseFloat($("#delivery_charge").val()) || 0;
+        let scanAmount = parseFloat($("#scan_charge").val()) || 0;
+
+        let taxAmount = 0;
+        if(taxPercent > 0) {
+            taxAmount = (grand * taxPercent) / 100;
+        }
+
+        let net = grand + taxAmount + serviceCharge + deliveryCharge + scanAmount ;
+
+    $("#net_amount").val(net.toFixed(2));
+
+
+       calculateBalance();
+}
+
+$(document).on("input", "#salestax_percent , #service_charge, #delivery_charge, #scan_charge", calculateGrandTotal);
+
+// $(document).on("input", " , function () {
+//     calculateBalance();
+// });
+    </script>
+
+    <script>
+// error
+
+// Event for static and appended rows
+$(document).on("change", ".tabletname, .combinationname, .category_name", function () {
+    let row = $(this).closest("tr");
+
+    let t = row.find(".tabletname").val();
+    let c = row.find(".combinationname").val();
+    let g = row.find(".category_name").val();
+    let rateInput = row.find(".pertabletmrp");
+
+    $("#tableError").hide().html(""); // clear error
+
+    if (t === "" || c === "" || g === "") {
+        rateInput.val(0);
+        return;
+    }
+
+    let key = `${t}|${c}|${g}`;
+
+
+    let found = medicines.find(x => x.tabletname === t && x.combinationname === c && x.category_name === g);
+
+    if (found) {
+        rateInput.val(found.pertabletmrp);
+    } else {
+        rateInput.val(0);
+        $("#tableError")
+            .html("<p style='color:red;font-weight:bold;padding:6px;'>⚠ Selected Combination Not Found!</p>")
+            .css({
+                "background": "#ffe6e6",
+                "border": "1px solid red",
+                "margin-top": "6px"
+            })
+            .show();
+    }
+
+ 
+
+
+
+
+    });
+
+    // ---------- 🔍 Duplicate Check Across Rows ----------
+    // let duplicate = false;
+    // $(".tabletname").each(function () {
+    //     let r = $(this).closest("tr");
+    //     let tt = r.find(".tabletname").val();
+    //     let cc = r.find(".combinationname").val();
+    //     let gg = r.find(".category_name").val();
+    //     if (tt && cc && gg) {
+    //         if (`${tt}|${cc}|${gg}` === key && r.index() !== row.index()) {
+    //             duplicate = true;
+    //         }
+    //     }
+    // });
+
+    // if (duplicate) {
+    //     rateInput.val(0);
+    //     $("#tableError")
+    //         .html("<p style='color:red;font-weight:bold;padding:6px;'>⚠ This Combination Already Added in Table!</p>")
+    //         .css({
+    //             "background": "#ffe6e6",
+    //             "border": "1px solid red",
+    //             "margin-top": "6px"
+    //         })
+    //         .show();
+    //     return;
+    // }
+
+
+    // ---------- 🔍 Find Rate from JSON ----------
+
+
+
+
+
+
+$(document).on("click", ".btnRemove", function () {
+    $(this).closest("tr").remove();
+      $("#tableError").hide();
+      calculateGrandTotal();   
+    calculateOverallGST();
+});
+
+setTimeout(() => { $("#tableError").fadeOut(); }, 3000);
+
+
+
+      </script>
+<script>
+//     $(document).on("input", ".qty", function () {
+//     let row = $(this).closest("tr");
+//     let qtyNeeded = parseFloat($(this).val()) || 0;
+
+//     let t = row.find(".tabletname").val();
+//     let c = row.find(".combinationname").val();
+//     let g = row.find(".category_name").val();
+
+//     // get all batches (FIFO)
+//     let batches = medicines.filter(m =>
+//         m.tabletname == t &&
+//         m.combinationname == c &&
+//         m.category_name == g
+//     );
+
+//     if (!batches.length) return;
+
+//     let totalRemaining = batches.reduce((a, b) => a + parseFloat(b.tabletqty), 0);
+//     if (qtyNeeded > totalRemaining) {
+//         $("#tableError").html(`❌ Only ${totalRemaining} total quantity available`).show();
+//         row.find(".qty").val("");
+//         return;
+//     }
+
+//     let qtyToFill = qtyNeeded;
+//     let currentRow = row;
+//     $("#tableError").hide();
+
+//     for (let batch of batches) {
+//         let available = parseFloat(batch.tabletqty);
+//         let rate = parseFloat(batch.pertabletmrp);
+
+//         if (qtyToFill <= 0) break;
+
+//         let take = Math.min(qtyToFill, available);
+
+//         // Fill current row
+//         currentRow.find(".pertabletmrp").val(rate);
+//         currentRow.find(".qty").val(take);
+//         currentRow.find(".total").val((rate * take).toFixed(2));
+
+//         qtyToFill -= take;
+
+//         // If quantity remains → append new row (next batch)
+//         if (qtyToFill > 0) {
+//             let newRow = `
+//                 <tr>
+
+//                       <td>
+//                         <input list="brandlist" class="form-control input-sm tabletname" placeholder="Select Brand">
+//                         <datalist id="brandlist">
+//                           ${$(".tabletname:first").html()}
+//                         </datalist>
+//                      </td>
+
+//                        <td>
+//                             <input list="combinationlist" class="form-control input-sm combinationname" placeholder="Select Combination">
+//                             <datalist id="combinationlist">
+//                                ${$(".combinationname:first").html()}
+//                             </datalist>
+//                         </td>
+//                     <td>
+//                         <input list="categorylist" class="form-control input-sm category_name" placeholder="Select Category">
+//                         <datalist id="categorylist">
+//                            ${$(".category_name:first").html()}
+//                         </datalist>
+//                     </td>
+
+
+//                     <td><input type="number" class="form-control form-control-sm qty"></td>
+//                     <td><input type="number" class="form-control form-control-sm gst"></td>
+//                     <td><input type="number" min="1" class="form-control form-control-sm days"></td>
+
+//                     <!-- FOOD -->
+//                                <td>
+//                     <input list="foodList" class="form-control input-sm food_type" placeholder="Select Food Type">
+//                     <datalist id="foodList">
+//                         <option value="before">
+//                         <option value="after">
+//                     </datalist>
+//                 </td>
+
+//                     <!-- COUNTS -->
+//                     <td><input type="number" min="0" class="form-control form-control-sm morning"></td>
+//                     <td><input type="number" min="0" class="form-control form-control-sm afternoon"></td>
+//                     <td><input type="number" min="0" class="form-control form-control-sm night"></td>
+
+//                     <!-- MRP -->
+//                     <td><input type="text" class="form-control form-control-sm pertabletmrp" readonly></td>
+
+//                     <!-- TOTAL -->
+//                     <td><input type="number" class="form-control form-control-sm total" readonly></td>
+
+//                     <!-- GST VALUES -->
+//                     <td><input type="text" id="total_gst" class="form-control form-control-sm total_gst" readonly></td>
+//                     <td class="cgst text-center">0.00</td>
+//                     <td class="sgst text-center">0.00</td>
+
+//                     <td><button type="button" class="btn btn-danger btnRemove">X</button></td>
+//                 </tr>
+//             `;
+//             $("#tabletforpatientnewrowadd").append(newRow);
+//             let last = $("#medicineTable tbody tr:last");
+
+//             last.find(".tabletname").val(t);
+//             last.find(".combinationname").val(c);
+//             last.find(".category_name").val(g);
+
+//             currentRow = last; // next fill into appended row
+//         }
+//     }
+
+//     calculateGrandTotal();
+// });
+
+$(document).on("input", ".qty", function () {
+    let row = $(this).closest("tr");
+    let qty = parseFloat($(this).val()) || 0;
+
+    row.nextAll(".fifo-row").remove();
+    applyFIFO(row, qty);
+});
+
+            
+    </script>
+
+
+<script>
+
+function calculateBalance() {
+    let total = parseFloat($("#net_amount").val()) || 0;
+    let cash = parseFloat($("#cash_paid").val()) || 0;
+    let gpay = parseFloat($("#gpay_paid").val()) || 0;
+
+    let paid = cash + gpay;
+    let remain = total - paid;
+
+    $("#remaining_amount").val(remain.toFixed(2));
+}
+
+// When changing payment
+$(document).on("input", "#cash_paid, #gpay_paid", calculateBalance);
+
+// 🟢 When adding items and Grand Total updated
+function updateGrandTotal(new_total) {
+    $("#total_amount").val(new_total);
+    calculateBalance();  // auto recalculate remaining
+}
+</script>
+
+
+<!-- imporatant div -->
+</div>
